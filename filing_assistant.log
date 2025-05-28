@@ -1,0 +1,7 @@
+2024-08-13 22:15:33,690 - WARNING - Storage file not found. Starting with an empty dataset.
+2024-08-13 22:15:33,691 - INFO - Added new entry: {'name': 'Report', 'type': 'PDF', 'description': 'Annual financial report for 2023'}
+2024-08-13 22:15:33,691 - INFO - Data saved successfully.
+2024-08-13 22:15:33,692 - INFO - Added new entry: {'name': 'Presentation', 'type': 'PPT', 'description': 'Sales presentation Q1 2023'}
+2024-08-13 22:15:33,693 - INFO - Data saved successfully.
+2024-08-13 22:15:33,693 - INFO - Deleted entry with name: Report
+2024-08-13 22:15:33,696 - INFO - Data saved successfully.

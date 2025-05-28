@@ -1,0 +1,5 @@
+{
+  "success": true,
+  "output": "Current Entries: [{'name': 'Report', 'type': 'PDF', 'description': 'Annual financial report for 2023'}, {'name': 'Presentation', 'type': 'PPT', 'description': 'Sales presentation Q1 2023'}]\nCurrent Entries after deletion: [{'name': 'Presentation', 'type': 'PPT', 'description': 'Sales presentation Q1 2023'}]\n",
+  "error": ""
+}
