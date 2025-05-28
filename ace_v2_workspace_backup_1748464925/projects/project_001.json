@@ -1,0 +1,24 @@
+{
+  "id": "project_001",
+  "name": "Project",
+  "description": "build code and deploy",
+  "tasks": [
+    {
+      "id": "task_001",
+      "description": "Implement: build code and deploy",
+      "code": "",
+      "metadata": null,
+      "dependencies": [],
+      "status": "pending",
+      "execution_result": null,
+      "created_at": "2025-05-28T16:40:50.914953",
+      "updated_at": "2025-05-28T16:40:50.914976",
+      "priority": 5,
+      "estimated_duration": null,
+      "category": "general"
+    }
+  ],
+  "created_at": "2025-05-28 16:40:49",
+  "status": "planning",
+  "execution_results": null
+}

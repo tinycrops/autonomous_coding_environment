@@ -53,7 +53,7 @@ class MetadataResponse(BaseModel):
     poetic_description: str
 
 class AutonomousSingleTaskCodingEnvironment:
-    def __init__(self, model: str = "gpt-4o-mini", workspace: str = "autonomous_single_task_workspace"):
+    def __init__(self, model: str = "o4-mini", workspace: str = "autonomous_single_task_workspace"):
         self.model = model
         self.workspace = workspace
         self.task: Optional[Task] = None

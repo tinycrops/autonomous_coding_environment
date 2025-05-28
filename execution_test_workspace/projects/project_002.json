@@ -1,0 +1,394 @@
+{
+  "id": "project_002",
+  "name": "Basic Math",
+  "description": "Create a simple function that calculates the square of a number with error handling",
+  "tasks": [
+    {
+      "id": "task_001",
+      "description": "Define square_number function skeleton with parameters",
+      "code": "#!/usr/bin/env python3\n\"\"\"\nsquare_number.py\n\nA command-line utility and module for computing the square of numeric values.\nProvides:\n  - square_number(): function with type checking and detailed debug logging\n  - main() script entry point with argparse for input values and verbosity\n\nUsage:\n  $ python square_number.py 2 3.5 -v\n  DEBUG:Entering square_number with value=2.0\n  DEBUG:Computed square: 4.0\n  The square of 2.0 is 4.0.\n  ...\n\nWithout arguments, it runs built-in examples.\n\"\"\"\nimport argparse\nimport logging\nfrom typing import Union\n\neNumber = Union[int, float]\n\n\ndef square_number(value: eNumber) -> eNumber:\n    \"\"\"\n    Calculate the square of a number.\n\n    :param value: An integer or float to be squared.\n    :return: The square of the input value.\n    :raises TypeError: If the provided value is not an int or float.\n    \"\"\"\n    logging.debug(f\"Entering square_number with value={value!r}\")\n\n    if not isinstance(value, (int, float)):\n        logging.error(f\"Invalid type for value: {type(value)}. Expected int or float.\")\n        raise TypeError(f\"Value must be int or float, got {type(value)} instead.\")\n\n    result = value * value\n    logging.debug(f\"Computed square: {result!r}\")\n    return result\n\n\ndef main() -> None:\n    \"\"\"\n    Parse command-line arguments and demonstrate square_number().\n\n    If no numeric arguments are provided, uses a default example list.\n    \"\"\"\n    parser = argparse.ArgumentParser(\n        description=\"Compute the square of one or more numbers.\"\n    )\n    parser.add_argument(\n        \"values\",\n        nargs=\"*\",\n        type=float,\n        help=\"Numbers to square (e.g. 2 3.5 10)\",\n    )\n    parser.add_argument(\n        \"-v\",\n        \"--verbose\",\n        action=\"store_true\",\n        help=\"Enable debug logging\",\n    )\n    args = parser.parse_args()\n\n    # Configure logging level\n    log_level = logging.DEBUG if args.verbose else logging.INFO\n    logging.basicConfig(level=log_level, format=\"%(levelname)s: %(message)s\")\n\n    # Use provided values or fall back to built-in examples\n    if args.values:\n        examples = args.values\n    else:\n        logging.info(\"No values provided; using default examples [5, -3.2, 'a_string']\")\n        examples = [5, -3.2, \"a_string\"]\n\n    # Compute and print squares, handling errors per item\n    for val in examples:\n        try:\n            squared = square_number(val)\n            print(f\"The square of {val!r} is {squared}.\")\n        except Exception:\n            logging.exception(f\"Failed to compute the square of {val!r}\")\n\n\nif __name__ == \"__main__\":\n    main()\n",
+      "metadata": null,
+      "dependencies": [],
+      "status": "failed",
+      "execution_result": {
+        "success": false,
+        "output": "",
+        "error": "python: can't open file '/home/ath/autonomous_coding_environment/execution_test_workspace/projects/project_002/execution_test_workspace/projects/project_002/task_001.py': [Errno 2] No such file or directory\n",
+        "return_code": 2,
+        "execution_time": 1748465845.3180733
+      },
+      "created_at": "2025-05-28T16:57:10.247948",
+      "updated_at": "2025-05-28T16:57:10.247958",
+      "priority": 10,
+      "estimated_duration": 10,
+      "category": "core"
+    },
+    {
+      "id": "task_002",
+      "description": "Implement input validation to check that the argument is an int or float, else raise TypeError",
+      "code": "#!/usr/bin/env python3\n\"\"\"\nnumeric_validator.py\n\nA script demonstrating input validation for numeric arguments (int or float)\nwith command-line interface and robust logging.\n\"\"\"\nimport logging\nimport argparse\nimport sys\nfrom typing import Union, Any\n\n# Define a type alias for our numeric types\nNumeric = Union[int, float]\n\n\ndef configure_logging(level: str = \"DEBUG\") -> None:\n    \"\"\"\n    Configure the root logger.\n    \"\"\"\n    numeric_level = getattr(logging, level.upper(), logging.DEBUG)\n    logging.basicConfig(\n        level=numeric_level,\n        format=\"%(asctime)s - %(name)s - %(levelname)s - %(message)s\"\n    )\n\nlogger = logging.getLogger(__name__)\n\n\ndef validate_numeric(value: Any, name: str = \"value\") -> Numeric:\n    \"\"\"\n    Ensure that `value` is an int or float, otherwise raise TypeError.\n    Returns the value back for chaining.\n    \"\"\"\n    if not isinstance(value, (int, float)):\n        message = f\"Invalid type for {name}: expected int or float, got {type(value).__name__}\"\n        logger.error(message)\n        raise TypeError(message)\n    logger.debug(\"%s validated as numeric: %r\", name, value)\n    return value\n\n\ndef divide(numerator: Numeric, denominator: Numeric) -> float:\n    \"\"\"\n    Divide two validated numeric values.\n\n    Raises:\n        TypeError        : if inputs are not numeric\n        ZeroDivisionError: if denominator is zero\n    \"\"\"\n    # Validate both inputs\n    num = validate_numeric(numerator, name=\"numerator\")\n    den = validate_numeric(denominator, name=\"denominator\")\n\n    if den == 0:\n        message = \"Denominator cannot be zero.\"\n        logger.error(message)\n        raise ZeroDivisionError(message)\n\n    result = num / den\n    logger.debug(\"Division result: %r / %r = %r\", num, den, result)\n    return result\n\n\ndef parse_args() -> argparse.Namespace:\n    \"\"\"\n    Parse command-line arguments.\n    \"\"\"\n    parser = argparse.ArgumentParser(\n        description=\"Divide two numbers with validation (int or float).\"\n    )\n    parser.add_argument(\n        \"numerator\", type=float,\n        help=\"Numerator (int or float)\"\n    )\n    parser.add_argument(\n        \"denominator\", type=float,\n        help=\"Denominator (int or float, non-zero)\"\n    )\n    return parser.parse_args()\n\n\ndef main() -> None:\n    \"\"\"\n    Entry point: parse args, perform division, and print or exit with error.\n    \"\"\"\n    args = parse_args()\n\n    try:\n        result = divide(args.numerator, args.denominator)\n    except Exception as exc:\n        logger.error(\"Error during division: %s\", exc)\n        sys.exit(1)\n\n    # On success, print the result to stdout\n    print(result)\n\n\nif __name__ == '__main__':\n    configure_logging()\n    main()",
+      "metadata": null,
+      "dependencies": [],
+      "status": "failed",
+      "execution_result": {
+        "success": false,
+        "output": "",
+        "error": "python: can't open file '/home/ath/autonomous_coding_environment/execution_test_workspace/projects/project_002/execution_test_workspace/projects/project_002/task_002.py': [Errno 2] No such file or directory\n",
+        "return_code": 2,
+        "execution_time": 1748465907.3564305
+      },
+      "created_at": "2025-05-28T16:57:10.247974",
+      "updated_at": "2025-05-28T16:57:10.247976",
+      "priority": 9,
+      "estimated_duration": 15,
+      "category": "core"
+    },
+    {
+      "id": "task_003",
+      "description": "Implement calculation logic inside square_number to compute n * n and return the result",
+      "code": "#!/usr/bin/env python3\n\"\"\"\nsquare.py\n\nA standalone script and module for computing the square of a number.\nSupports direct execution (with CLI arguments) or importing the `square_number` function.\n\"\"\"\nimport argparse\nimport logging\nimport sys\nimport unittest\n\n\ndef _configure_logging() -> logging.Logger:\n    \"\"\"\n    Configure and return a module-level logger.\n    Ensures only one StreamHandler is added in interactive or repeated imports.\n    \"\"\"\n    logger = logging.getLogger(__name__)\n    if not logger.handlers:\n        handler = logging.StreamHandler()\n        formatter = logging.Formatter(\n            '%(asctime)s - %(name)s - %(levelname)s - %(message)s'\n        )\n        handler.setFormatter(formatter)\n        logger.addHandler(handler)\n    logger.setLevel(logging.DEBUG)\n    return logger\n\n\ng_logger = _configure_logging()\n\n\ndef square_number(n: float) -> float:\n    \"\"\"\n    Compute the square of a number.\n\n    Parameters:\n        n (int or float): The number to square.\n\n    Returns:\n        int or float: The square of the input.\n\n    Raises:\n        TypeError: If the input is not an int or float.\n    \"\"\"\n    g_logger.debug('square_number called with n=%r', n)\n\n    if not isinstance(n, (int, float)):\n        msg = f'Invalid type for n: expected int or float, got {type(n).__name__}'\n        g_logger.error(msg)\n        raise TypeError(msg)\n\n    result = n * n\n    g_logger.debug('Computed result: %r', result)\n    return result\n\n\nclass TestSquareNumber(unittest.TestCase):\n    \"\"\"Unit tests for the square_number function.\"\"\"\n    def test_positive_int(self):\n        self.assertEqual(square_number(5), 25)\n\n    def test_zero(self):\n        self.assertEqual(square_number(0), 0)\n\n    def test_negative_float(self):\n        self.assertAlmostEqual(square_number(-3.5), 12.25)\n\n    def test_invalid_type(self):\n        with self.assertRaises(TypeError):\n            square_number('not a number')\n\n\ndef main():\n    parser = argparse.ArgumentParser(\n        description='Compute the square of a number.'\n    )\n    parser.add_argument(\n        'value',\n        nargs='?',  # optional\n        type=float,\n        help='The number (int or float) to square.'\n    )\n    parser.add_argument(\n        '--test', '-t',\n        action='store_true',\n        help='Run the unit tests and exit.'\n    )\n    args = parser.parse_args()\n\n    if args.test:\n        # Run the unit tests\n        sys.argv = [sys.argv[0]]  # unittest main() expects only script name\n        unittest.main()\n        return\n\n    # If no value provided, demonstrate default examples\n    examples = [0, 2, -3.5, 10] if args.value is None else [args.value]\n    for val in examples:\n        try:\n            squared = square_number(val)\n            print(f'The square of {val} is {squared}')\n        except Exception as e:\n            print(f'Error computing square of {val}: {e}', file=sys.stderr)\n\n\nif __name__ == '__main__':\n    main()",
+      "metadata": null,
+      "dependencies": [],
+      "status": "failed",
+      "execution_result": {
+        "success": false,
+        "output": "",
+        "error": "python: can't open file '/home/ath/autonomous_coding_environment/execution_test_workspace/projects/project_002/execution_test_workspace/projects/project_002/task_003.py': [Errno 2] No such file or directory\n",
+        "return_code": 2,
+        "execution_time": 1748465876.5169923
+      },
+      "created_at": "2025-05-28T16:57:10.247983",
+      "updated_at": "2025-05-28T16:57:10.247984",
+      "priority": 10,
+      "estimated_duration": 15,
+      "category": "core"
+    },
+    {
+      "id": "task_004",
+      "description": "Add error handling inside square_number to catch unexpected exceptions (e.g., OverflowError) and re-raise with a clear message",
+      "code": "import logging\nimport math\nfrom typing import Union\n\n# Configure module-level logger\nt_logger = logging.getLogger(__name__)\nt_logger.setLevel(logging.DEBUG)\n_handler = logging.StreamHandler()\n_formatter = logging.Formatter(\n    '%(asctime)s - %(name)s - %(levelname)s - %(message)s'\n)\n_handler.setFormatter(_formatter)\nt_logger.addHandler(_handler)\n\ndef square_number(value: Union[int, float]) -> Union[int, float]:\n    \"\"\"\n    Returns the square of the provided numeric value.\n\n    Args:\n        value (int|float): The number to square.\n\n    Returns:\n        int|float: The squared result.\n\n    Raises:\n        RuntimeError: If an unexpected error (e.g., OverflowError or TypeError) occurs.\n    \"\"\"\n    try:\n        # Explicit type check\n        if not isinstance(value, (int, float)):\n            raise TypeError(f\"Expected int or float, got {type(value).__name__}\")\n\n        result = value * value\n        t_logger.debug(f\"Squaring {value!r}, result is {result!r}\")\n\n        # Check for non-finite results (e.g., overflow in float arithmetic)\n        if isinstance(result, float) and not math.isfinite(result):\n            raise OverflowError(f\"Result of squaring {value!r} is not finite: {result!r}\")\n\n        return result\n\n    except (TypeError, OverflowError) as e:\n        # Log the original exception with traceback\n        t_logger.exception(\"Failed to square number due to invalid input or overflow.\")\n        # Re-raise with a clear, user-friendly message\n        raise RuntimeError(f\"Error squaring the value {value!r}: {e}\") from e\n    except Exception as e:\n        # Catch-all for any other unexpected exceptions\n        t_logger.exception(\"An unexpected error occurred in square_number.\")\n        raise RuntimeError(f\"Unexpected error while squaring {value!r}: {e}\") from e\n\n\nif __name__ == '__main__':\n    # Demonstrate successful usage\n    try:\n        num = 12\n        print(f\"The square of {num} is {square_number(num)}\")\n    except RuntimeError as err:\n        print(f\"RuntimeError encountered: {err}\")\n\n    # Demonstrate error handling with invalid input\n    try:\n        bad_input = \"abc\"\n        print(f\"Attempting to square {bad_input!r}...\")\n        square_number(bad_input)\n    except RuntimeError as err:\n        print(f\"Caught an error: {err}\")\n\n    # Demonstrate overflow for a large float\n    try:\n        huge = 1e200\n        print(f\"Attempting to square a huge float {huge}...\")\n        square_number(huge)\n    except RuntimeError as err:\n        print(f\"Caught an error: {err}\")\n",
+      "metadata": null,
+      "dependencies": [],
+      "status": "failed",
+      "execution_result": {
+        "success": false,
+        "output": "",
+        "error": "python: can't open file '/home/ath/autonomous_coding_environment/execution_test_workspace/projects/project_002/execution_test_workspace/projects/project_002/task_004.py': [Errno 2] No such file or directory\n",
+        "return_code": 2,
+        "execution_time": 1748465944.9363763
+      },
+      "created_at": "2025-05-28T16:57:10.247990",
+      "updated_at": "2025-05-28T16:57:10.247992",
+      "priority": 8,
+      "estimated_duration": 15,
+      "category": "core"
+    },
+    {
+      "id": "task_005",
+      "description": "Document square_number with a detailed docstring (parameters, return value, raised exceptions)",
+      "code": "#!/usr/bin/env python3\n\"\"\"\nModule: square_module\n\nProvides functionality to compute the square of a number with\ninput validation, detailed logging, and robust error handling.\n\"\"\"\n\nimport logging\nimport math\nfrom typing import Union\n\n# Configure module-level logger\nlogger = logging.getLogger(__name__)\n\n\ndef square_number(value: Union[int, float]) -> Union[int, float]:\n    \"\"\"\n    Compute and return the square of a number.\n\n    Parameters\n    ----------\n    value : int or float\n        The number to be squared. Must be a finite integer or float.\n\n    Returns\n    -------\n    int or float\n        The square of the input value.\n\n    Raises\n    ------\n    TypeError\n        If `value` is not an integer or float.\n    ValueError\n        If `value` is NaN or infinite.\n    \"\"\"\n    logger.debug(\"Entering square_number with value=%r\", value)\n\n    # Type validation\n    if not isinstance(value, (int, float)):\n        logger.error(\"TypeError: Expected int or float, got %s\", type(value).__name__)\n        raise TypeError(f\"Expected int or float, got {type(value).__name__}\")\n\n    # Float-specific checks\n    if isinstance(value, float):\n        if math.isnan(value):\n            logger.error(\"ValueError: Cannot square NaN\")\n            raise ValueError(\"Cannot square NaN values\")\n        if math.isinf(value):\n            logger.error(\"ValueError: Cannot square infinite value\")\n            raise ValueError(\"Cannot square infinite values\")\n\n    # Compute the square\n    result = value * value\n    logger.debug(\"Computed square: %r * %r = %r\", value, value, result)\n    return result\n\n\nif __name__ == '__main__':\n    # Basic console logging configuration\n    logging.basicConfig(\n        format='%(levelname)s:%(name)s:%(message)s',\n        level=logging.DEBUG\n    )\n\n    # Example usages:\n    examples = [5, -3.2, float('nan'), float('inf'), 'not a number']\n    for item in examples:\n        try:\n            squared = square_number(item)\n            print(f\"The square of {item!r} is {squared}\")\n        except (TypeError, ValueError) as err:\n            logger.exception(\"Failed to square %r\", item)\n            print(f\"Error computing square of {item!r}: {err}\")",
+      "metadata": null,
+      "dependencies": [],
+      "status": "failed",
+      "execution_result": {
+        "success": false,
+        "output": "",
+        "error": "python: can't open file '/home/ath/autonomous_coding_environment/execution_test_workspace/projects/project_002/execution_test_workspace/projects/project_002/task_005.py': [Errno 2] No such file or directory\n",
+        "return_code": 2,
+        "execution_time": 1748466048.777191
+      },
+      "created_at": "2025-05-28T16:57:10.247997",
+      "updated_at": "2025-05-28T16:57:10.247999",
+      "priority": 7,
+      "estimated_duration": 10,
+      "category": "documentation"
+    },
+    {
+      "id": "task_006",
+      "description": "Write unit tests for valid inputs (integers, floats, zero, negatives) using unittest",
+      "code": "# math_utils.py\nimport logging\n\n# Configure module-level logger (this will propagate to the root logger unless otherwise configured)\nlogger = logging.getLogger(__name__)\nif not logger.handlers:\n    # Prevent adding multiple handlers in interactive environments\n    handler = logging.StreamHandler()\n    formatter = logging.Formatter(\"%(asctime)s - %(name)s - %(levelname)s - %(message)s\")\n    handler.setFormatter(formatter)\n    logger.addHandler(handler)\nlogger.setLevel(logging.DEBUG)\n\ndef square_number(x):\n    \"\"\"\n    Returns the square of a numeric input.\n\n    Parameters:\n        x (int or float): The number to square.\n\n    Returns:\n        int or float: The square of x.\n\n    Raises:\n        TypeError: If x is not an int or float.\n    \"\"\"\n    if not isinstance(x, (int, float)):\n        logger.error(\"Invalid type for square_number: %r (type %s)\", x, type(x).__name__)\n        raise TypeError(f\"Input must be an int or float, got {type(x).__name__}\")\n\n    result = x * x\n    logger.debug(\"square_number(%r) -> %r\", x, result)\n    return result\n\n\nif __name__ == '__main__':\n    # Demonstration of function behavior\n    test_values = [3, -2, 0, 1.5]\n    for value in test_values:\n        print(f\"square_number({value}) = {square_number(value)}\")",
+      "metadata": null,
+      "dependencies": [],
+      "status": "failed",
+      "execution_result": {
+        "success": false,
+        "output": "",
+        "error": "python: can't open file '/home/ath/autonomous_coding_environment/execution_test_workspace/projects/project_002/execution_test_workspace/projects/project_002/task_006.py': [Errno 2] No such file or directory\n",
+        "return_code": 2,
+        "execution_time": 1748465988.1576009
+      },
+      "created_at": "2025-05-28T16:57:10.248004",
+      "updated_at": "2025-05-28T16:57:10.248005",
+      "priority": 8,
+      "estimated_duration": 20,
+      "category": "testing"
+    },
+    {
+      "id": "task_007",
+      "description": "Write unit tests for invalid inputs (strings, None, lists) asserting TypeError is raised",
+      "code": "# calculator.py\n\"\"\"\nA simple calculator module that only accepts numeric inputs.\n\"\"\"\nimport logging\n\nlogger = logging.getLogger(__name__)\nif not logger.handlers:\n    handler = logging.StreamHandler()\n    formatter = logging.Formatter(\n        \"%(asctime)s - %(name)s - %(levelname)s - %(message)s\"\n    )\n    handler.setFormatter(formatter)\n    logger.addHandler(handler)\nlogger.setLevel(logging.DEBUG)\n\n\ndef add(a, b):\n    \"\"\"\n    Return the sum of a and b. Both must be int or float, otherwise TypeError is raised.\n\n    :param a: first addend (int or float)\n    :param b: second addend (int or float)\n    :return: sum of a and b\n    :raises TypeError: if a or b is not int or float\n    \"\"\"\n    logger.debug(f\"Called add(a={a!r}, b={b!r})\")\n    if not isinstance(a, (int, float)):\n        msg = f\"First argument must be int or float, got {type(a).__name__}\"\n        logger.error(msg)\n        raise TypeError(msg)\n    if not isinstance(b, (int, float)):\n        msg = f\"Second argument must be int or float, got {type(b).__name__}\"\n        logger.error(msg)\n        raise TypeError(msg)\n\n    result = a + b\n    logger.debug(f\"Result: {result}\")\n    return result\n\n\nif __name__ == \"__main__\":\n    # Quick demonstration\n    print(\"2 + 3 =\", add(2, 3))\n    print(\"1.5 + 4.2 =\", add(1.5, 4.2))",
+      "metadata": null,
+      "dependencies": [],
+      "status": "failed",
+      "execution_result": {
+        "success": false,
+        "output": "",
+        "error": "python: can't open file '/home/ath/autonomous_coding_environment/execution_test_workspace/projects/project_002/execution_test_workspace/projects/project_002/task_007.py': [Errno 2] No such file or directory\n",
+        "return_code": 2,
+        "execution_time": 1748466014.3737729
+      },
+      "created_at": "2025-05-28T16:57:10.248010",
+      "updated_at": "2025-05-28T16:57:10.248012",
+      "priority": 8,
+      "estimated_duration": 20,
+      "category": "testing"
+    },
+    {
+      "id": "task_008",
+      "description": "Add logging statements in square_number to log input and output at DEBUG level",
+      "code": "#!/usr/bin/env python3\n\"\"\"\nModule: square_module\n\nThis module provides a function to compute the square of a number,\nwith detailed DEBUG-level logging of inputs and outputs.\n\"\"\"\nimport logging\nfrom typing import Union\n\n# Create a module-level logger\nlogger = logging.getLogger(__name__)\nNumber = Union[int, float]\n\ndef configure_logging(level: int = logging.DEBUG) -> None:\n    \"\"\"\n    Configure the root logger to output to the console.\n    If handlers already exist, just set the level on the module logger.\n    \"\"\"\n    if not logging.root.handlers:\n        logging.basicConfig(\n            level=level,\n            format=\"%(asctime)s - %(name)s - %(levelname)s - %(message)s\"\n        )\n    logger.setLevel(level)\n\n\ndef square_number(n: Number) -> Number:\n    \"\"\"\n    Compute the square of a number, with DEBUG logging of input and output.\n\n    Parameters:\n        n (int or float): The numeric value to square.\n\n    Returns:\n        int or float: The square of the input number.\n\n    Raises:\n        TypeError: If the input is not an int or float.\n    \"\"\"\n    # Log the received input\n    logger.debug(\"Received input for squaring: %r\", n)\n\n    # Validate the input type\n    if not isinstance(n, (int, float)):\n        logger.error(\n            \"Invalid input type: %s. Expected int or float.\",\n            type(n).__name__\n        )\n        raise TypeError(f\"Input must be an int or float, got {type(n).__name__}\")\n\n    # Compute the square\n    result = n * n\n    # Log the computed result\n    logger.debug(\"Computed square result: %r\", result)\n\n    return result\n\n\ndef main() -> None:\n    # Configure logging at DEBUG level\n    configure_logging()\n\n    examples = [5, 3.14, \"not_a_number\"]\n    for value in examples:\n        try:\n            squared = square_number(value)\n            print(f\"The square of {value!r} is {squared}\")\n        except TypeError:\n            # Log full traceback for debugging\n            logger.exception(\"Failed to compute square for input: %r\", value)\n            print(f\"Error: Input {value!r} is not a number.\")\n\n\nif __name__ == \"__main__\":\n    main()",
+      "metadata": null,
+      "dependencies": [],
+      "status": "failed",
+      "execution_result": {
+        "success": false,
+        "output": "",
+        "error": "python: can't open file '/home/ath/autonomous_coding_environment/execution_test_workspace/projects/project_002/execution_test_workspace/projects/project_002/task_008.py': [Errno 2] No such file or directory\n",
+        "return_code": 2,
+        "execution_time": 1748466079.578841
+      },
+      "created_at": "2025-05-28T16:57:10.248020",
+      "updated_at": "2025-05-28T16:57:10.248022",
+      "priority": 5,
+      "estimated_duration": 20,
+      "category": "feature"
+    }
+  ],
+  "created_at": "2025-05-28 16:56:38",
+  "status": "partially_completed",
+  "execution_results": {
+    "phases": [
+      {
+        "phase_number": 1,
+        "tasks_executed": 8,
+        "successful_tasks": 0,
+        "failed_tasks": 8,
+        "results": [
+          {
+            "task_id": "task_001",
+            "status": "failed",
+            "execution_result": {
+              "success": false,
+              "output": "",
+              "error": "python: can't open file '/home/ath/autonomous_coding_environment/execution_test_workspace/projects/project_002/execution_test_workspace/projects/project_002/task_001.py': [Errno 2] No such file or directory\n",
+              "return_code": 2,
+              "execution_time": 1748465845.3180733
+            }
+          },
+          {
+            "task_id": "task_003",
+            "status": "failed",
+            "execution_result": {
+              "success": false,
+              "output": "",
+              "error": "python: can't open file '/home/ath/autonomous_coding_environment/execution_test_workspace/projects/project_002/execution_test_workspace/projects/project_002/task_003.py': [Errno 2] No such file or directory\n",
+              "return_code": 2,
+              "execution_time": 1748465876.5169923
+            }
+          },
+          {
+            "task_id": "task_002",
+            "status": "failed",
+            "execution_result": {
+              "success": false,
+              "output": "",
+              "error": "python: can't open file '/home/ath/autonomous_coding_environment/execution_test_workspace/projects/project_002/execution_test_workspace/projects/project_002/task_002.py': [Errno 2] No such file or directory\n",
+              "return_code": 2,
+              "execution_time": 1748465907.3564305
+            }
+          },
+          {
+            "task_id": "task_004",
+            "status": "failed",
+            "execution_result": {
+              "success": false,
+              "output": "",
+              "error": "python: can't open file '/home/ath/autonomous_coding_environment/execution_test_workspace/projects/project_002/execution_test_workspace/projects/project_002/task_004.py': [Errno 2] No such file or directory\n",
+              "return_code": 2,
+              "execution_time": 1748465944.9363763
+            }
+          },
+          {
+            "task_id": "task_006",
+            "status": "failed",
+            "execution_result": {
+              "success": false,
+              "output": "",
+              "error": "python: can't open file '/home/ath/autonomous_coding_environment/execution_test_workspace/projects/project_002/execution_test_workspace/projects/project_002/task_006.py': [Errno 2] No such file or directory\n",
+              "return_code": 2,
+              "execution_time": 1748465988.1576009
+            }
+          },
+          {
+            "task_id": "task_007",
+            "status": "failed",
+            "execution_result": {
+              "success": false,
+              "output": "",
+              "error": "python: can't open file '/home/ath/autonomous_coding_environment/execution_test_workspace/projects/project_002/execution_test_workspace/projects/project_002/task_007.py': [Errno 2] No such file or directory\n",
+              "return_code": 2,
+              "execution_time": 1748466014.3737729
+            }
+          },
+          {
+            "task_id": "task_005",
+            "status": "failed",
+            "execution_result": {
+              "success": false,
+              "output": "",
+              "error": "python: can't open file '/home/ath/autonomous_coding_environment/execution_test_workspace/projects/project_002/execution_test_workspace/projects/project_002/task_005.py': [Errno 2] No such file or directory\n",
+              "return_code": 2,
+              "execution_time": 1748466048.777191
+            }
+          },
+          {
+            "task_id": "task_008",
+            "status": "failed",
+            "execution_result": {
+              "success": false,
+              "output": "",
+              "error": "python: can't open file '/home/ath/autonomous_coding_environment/execution_test_workspace/projects/project_002/execution_test_workspace/projects/project_002/task_008.py': [Errno 2] No such file or directory\n",
+              "return_code": 2,
+              "execution_time": 1748466079.578841
+            }
+          }
+        ]
+      }
+    ],
+    "summary": {
+      "total_tasks": 8,
+      "completed_tasks": 0,
+      "failed_tasks": 8,
+      "success_rate": 0.0,
+      "total_phases": 1
+    },
+    "validation_results": {
+      "task_validations": {
+        "task_001": {
+          "task_id": "task_001",
+          "static_analysis": {
+            "syntax_valid": true,
+            "has_main_function": true,
+            "has_docstrings": true,
+            "has_error_handling": true,
+            "complexity_score": 5,
+            "issues": []
+          },
+          "test_results": [],
+          "overall_quality": "unknown"
+        },
+        "task_002": {
+          "task_id": "task_002",
+          "static_analysis": {
+            "syntax_valid": true,
+            "has_main_function": true,
+            "has_docstrings": true,
+            "has_error_handling": true,
+            "complexity_score": 4,
+            "issues": []
+          },
+          "test_results": [],
+          "overall_quality": "unknown"
+        },
+        "task_003": {
+          "task_id": "task_003",
+          "static_analysis": {
+            "syntax_valid": true,
+            "has_main_function": true,
+            "has_docstrings": true,
+            "has_error_handling": true,
+            "complexity_score": 7,
+            "issues": []
+          },
+          "test_results": [],
+          "overall_quality": "unknown"
+        },
+        "task_004": {
+          "task_id": "task_004",
+          "static_analysis": {
+            "syntax_valid": true,
+            "has_main_function": false,
+            "has_docstrings": true,
+            "has_error_handling": true,
+            "complexity_score": 7,
+            "issues": []
+          },
+          "test_results": [],
+          "overall_quality": "unknown"
+        },
+        "task_005": {
+          "task_id": "task_005",
+          "static_analysis": {
+            "syntax_valid": true,
+            "has_main_function": false,
+            "has_docstrings": true,
+            "has_error_handling": true,
+            "complexity_score": 7,
+            "issues": []
+          },
+          "test_results": [],
+          "overall_quality": "unknown"
+        },
+        "task_006": {
+          "task_id": "task_006",
+          "static_analysis": {
+            "syntax_valid": true,
+            "has_main_function": false,
+            "has_docstrings": true,
+            "has_error_handling": false,
+            "complexity_score": 4,
+            "issues": []
+          },
+          "test_results": [],
+          "overall_quality": "unknown"
+        },
+        "task_007": {
+          "task_id": "task_007",
+          "static_analysis": {
+            "syntax_valid": true,
+            "has_main_function": false,
+            "has_docstrings": true,
+            "has_error_handling": false,
+            "complexity_score": 4,
+            "issues": []
+          },
+          "test_results": [],
+          "overall_quality": "unknown"
+        },
+        "task_008": {
+          "task_id": "task_008",
+          "static_analysis": {
+            "syntax_valid": true,
+            "has_main_function": true,
+            "has_docstrings": true,
+            "has_error_handling": true,
+            "complexity_score": 5,
+            "issues": []
+          },
+          "test_results": [],
+          "overall_quality": "unknown"
+        }
+      },
+      "summary": {
+        "total_validated": 8,
+        "excellent": 0,
+        "good": 0,
+        "fair": 0,
+        "poor": 0,
+        "quality_distribution": {
+          "unknown": 8
+        }
+      }
+    }
+  }
+}

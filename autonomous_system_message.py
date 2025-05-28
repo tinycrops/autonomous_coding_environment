@@ -58,7 +58,7 @@ class TaskGenerationResponse(BaseModel):
     rationale: str
 
 class AutonomousContinuousCodingEnvironment:
-    def __init__(self, model: str = "gpt-4o-mini", workspace: str = "autonomous_continuous_workspace"):
+    def __init__(self, model: str = "o4-mini", workspace: str = "autonomous_continuous_workspace"):
         self.model = model
         self.workspace = workspace
         self.current_task: Optional[Task] = None

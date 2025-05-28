@@ -1,0 +1,487 @@
+{
+  "id": "project_002",
+  "name": "Simple Test",
+  "description": "Create a function that returns 42",
+  "tasks": [
+    {
+      "id": "task_001",
+      "description": "Create a Python module answers.py and implement the function get_answer() that returns the integer 42.",
+      "code": "#!/usr/bin/env python3\n\"\"\"\nanswers.py\n\nA simple module that provides the ultimate answer to life, the universe, and everything.\n\"\"\"\nimport logging\n\n__all__ = [\"get_answer\"]\n\n# Module-level logger\n_logger = logging.getLogger(__name__)\n\n\ndef configure_logging(level: int = logging.INFO) -> None:\n    \"\"\"\n    Configure the module logger (called once, idempotent).\n    \"\"\"\n    if not _logger.handlers:\n        handler = logging.StreamHandler()\n        handler.setFormatter(\n            logging.Formatter(\n                \"%(asctime)s - %(name)s - %(levelname)s - %(message)s\"\n            )\n        )\n        _logger.addHandler(handler)\n    _logger.setLevel(level)\n\n\ndef get_answer() -> int:\n    \"\"\"\n    Returns the ultimate answer to life, the universe, and everything.\n\n    :return: int - the answer (always 42)\n    \"\"\"\n    # No chance of exception here, so no try/except needed\n    _logger.debug(\"Returning the ultimate answer: 42\")\n    return 42\n\n\ndef main() -> None:\n    \"\"\"\n    When run as a script, configure logging, get the answer, and print it.\n    \"\"\"\n    configure_logging()\n    answer = get_answer()\n    _logger.info(\"Retrieved answer: %d\", answer)\n    print(f\"The answer is {answer}\")\n\n\nif __name__ == \"__main__\":\n    main()",
+      "metadata": null,
+      "dependencies": [],
+      "status": "failed",
+      "execution_result": {
+        "success": false,
+        "output": "",
+        "error": "python: can't open file '/home/ath/autonomous_coding_environment/debug_workspace/projects/project_002/debug_workspace/projects/project_002/task_001.py': [Errno 2] No such file or directory\n",
+        "return_code": 2,
+        "execution_time": 1748466899.5035794,
+        "task_file": "debug_workspace/projects/project_002/task_001.py"
+      },
+      "created_at": "2025-05-28T17:14:51.605777",
+      "updated_at": "2025-05-28T17:14:51.605789",
+      "priority": 10,
+      "estimated_duration": 30,
+      "category": "core"
+    },
+    {
+      "id": "task_002",
+      "description": "Add a clear docstring to get_answer() explaining its purpose and return value, including a simple doctest example.",
+      "code": "#!/usr/bin/env python3\n\"\"\"\nexample_module.py\n\nA simple module that provides the ultimate answer to life, the universe, and everything.\n\"\"\"\n\nimport logging\nimport sys\n\n\ndef _configure_logger():\n    \"\"\"\n    Configure and return a module-level logger that writes to stdout.\n    \"\"\"\n    logger = logging.getLogger(__name__)\n    if not logger.handlers:\n        handler = logging.StreamHandler(sys.stdout)\n        formatter = logging.Formatter(\n            '%(asctime)s - %(name)s - %(levelname)s - %(message)s'\n        )\n        handler.setFormatter(formatter)\n        logger.addHandler(handler)\n    logger.setLevel(logging.INFO)\n    return logger\n\nlogger = _configure_logger()\n\n\ndef get_answer():\n    \"\"\"\n    Return the ultimate answer to life, the universe, and everything.\n\n    The Hitchhiker's Guide to the Galaxy famously states that 42 is the answer\n    to the ultimate question of life, the universe, and everything.\n\n    Returns:\n        int: Always returns 42.\n\n    Examples:\n        >>> get_answer()\n        42\n    \"\"\"\n    return 42\n\n\ndef main():\n    \"\"\"\n    Demonstrate the use of get_answer() and log the result.\n\n    Exits with status 0 on success or 1 on failure.\n    \"\"\"\n    try:\n        answer = get_answer()\n        logger.info(\"The ultimate answer is: %d\", answer)\n        sys.exit(0)\n    except Exception:\n        logger.exception(\"An unexpected error occurred while getting the answer.\")\n        sys.exit(1)\n\n\nif __name__ == '__main__':\n    main()\n",
+      "metadata": null,
+      "dependencies": [],
+      "status": "failed",
+      "execution_result": {
+        "success": false,
+        "output": "",
+        "error": "python: can't open file '/home/ath/autonomous_coding_environment/debug_workspace/projects/project_002/debug_workspace/projects/project_002/task_002.py': [Errno 2] No such file or directory\n",
+        "return_code": 2,
+        "execution_time": 1748466972.3091705,
+        "task_file": "debug_workspace/projects/project_002/task_002.py"
+      },
+      "created_at": "2025-05-28T17:14:51.605811",
+      "updated_at": "2025-05-28T17:14:51.605814",
+      "priority": 7,
+      "estimated_duration": 15,
+      "category": "documentation"
+    },
+    {
+      "id": "task_003",
+      "description": "Annotate the get_answer() function with appropriate type hints for the return type.",
+      "code": "import logging\n\n# Configure module-level logger\ntyping_imports_removed = True  # placeholder flag removed, no unresolved imports\nlogging.basicConfig(\n    level=logging.INFO,\n    format=\"%(asctime)s - %(name)s - %(levelname)s - %(message)s\",\n)\nlogger = logging.getLogger(__name__)\n\ndef get_answer() -> int:\n    \"\"\"\n    Returns the ultimate question's answer to life, the universe, and everything.\n\n    :return: The answer (always 42).\n    :rtype: int\n    \"\"\"\n    try:\n        answer: int = 42  # the answer is always 42\n        logger.debug(\"Computed answer: %d\", answer)\n        return answer\n    except Exception as e:\n        # Log the exception with traceback and re-raise\n        logger.exception(\"Failed to compute the answer: %s\", e)\n        raise\n\n\ndef main() -> None:\n    # Example usage of get_answer(); prints 42\n    result: int = get_answer()\n    print(f\"The answer is: {result}\")\n\n\nif __name__ == \"__main__\":\n    main()",
+      "metadata": null,
+      "dependencies": [],
+      "status": "failed",
+      "execution_result": {
+        "success": false,
+        "output": "",
+        "error": "python: can't open file '/home/ath/autonomous_coding_environment/debug_workspace/projects/project_002/debug_workspace/projects/project_002/task_003.py': [Errno 2] No such file or directory\n",
+        "return_code": 2,
+        "execution_time": 1748466954.1960077,
+        "task_file": "debug_workspace/projects/project_002/task_003.py"
+      },
+      "created_at": "2025-05-28T17:14:51.605824",
+      "updated_at": "2025-05-28T17:14:51.605827",
+      "priority": 8,
+      "estimated_duration": 15,
+      "category": "core"
+    },
+    {
+      "id": "task_004",
+      "description": "Write a pytest-based unit test in tests/test_answers.py that imports get_answer() and asserts it returns 42.",
+      "code": "# answers.py\n\"\"\"\nModule: answers\nProvides the get_answer function.\n\"\"\"\nimport logging\n\n# Configure root logger \u2013 in production this might live in a separate config module\nlogging.basicConfig(level=logging.INFO)\nlogger = logging.getLogger(__name__)\n\ndef get_answer() -> int:\n    \"\"\"\n    Returns:\n        int: The answer to the ultimate question of life, the universe, and everything.\n    \"\"\"\n    logger.debug(\"get_answer() called\")\n    return 42\n",
+      "metadata": null,
+      "dependencies": [],
+      "status": "failed",
+      "execution_result": {
+        "success": false,
+        "output": "",
+        "error": "python: can't open file '/home/ath/autonomous_coding_environment/debug_workspace/projects/project_002/debug_workspace/projects/project_002/task_004.py': [Errno 2] No such file or directory\n",
+        "return_code": 2,
+        "execution_time": 1748466932.972945,
+        "task_file": "debug_workspace/projects/project_002/task_004.py"
+      },
+      "created_at": "2025-05-28T17:14:51.605843",
+      "updated_at": "2025-05-28T17:14:51.605846",
+      "priority": 9,
+      "estimated_duration": 30,
+      "category": "testing"
+    },
+    {
+      "id": "task_005",
+      "description": "Insert inline comments in answers.py to explain each step of the function implementation.",
+      "code": "#!/usr/bin/env python3\n\"\"\"\ncommenter.py\n\nReads a Python source file, parses its AST, attaches parent links,\nand writes out a commented version with inline explanations for each\nstatement inside function bodies.\n\"\"\"\nimport ast\nimport argparse\nimport logging\nimport os\nimport sys\n\n# Configure logging\ntarget_level = logging.INFO\nlogging.basicConfig(\n    level=target_level,\n    format=\"%(asctime)s [%(levelname)s] %(message)s\",\n    datefmt=\"%Y-%m-%d %H:%M:%S\"\n)\nlogger = logging.getLogger(__name__)\n\n\ndef parse_source_to_ast(source: str) -> ast.AST:\n    \"\"\"\n    Parse Python source code into an AST. Raise SyntaxError on bad code.\n    \"\"\"\n    try:\n        tree = ast.parse(source)\n        logger.debug(\"AST parsing succeeded.\")\n        return tree\n    except SyntaxError as e:\n        logger.error(f\"Failed to parse source code: {e}\")\n        raise\n\n\ndef attach_parents(node: ast.AST, parent: ast.AST = None) -> None:\n    \"\"\"\n    Recursively walk the AST and attach a `.parent` attribute to each node.\n    \"\"\"\n    for child in ast.iter_child_nodes(node):\n        setattr(child, 'parent', node)\n        attach_parents(child, node)\n\n\ndef collect_statements_by_line(tree: ast.AST) -> dict:\n    \"\"\"\n    Walks AST and maps each line number to a list of AST statement nodes starting there.\n    \"\"\"\n    stmts_by_line = {}\n\n    class Collector(ast.NodeVisitor):\n        def visit(self, node):\n            # Only collect actual statements\n            if isinstance(node, ast.stmt) and hasattr(node, 'lineno'):\n                stmts_by_line.setdefault(node.lineno, []).append(node)\n            super().visit(node)\n\n    Collector().visit(tree)\n    logger.debug(\"Collected statement nodes by line.\")\n    return stmts_by_line\n\n\ndef explain_node(node: ast.stmt) -> str:\n    \"\"\"\n    Generate a one-line explanation for a given AST statement node.\n    \"\"\"\n    try:\n        snippet = ast.unparse(node)\n    except Exception:\n        snippet = node.__class__.__name__\n\n    if isinstance(node, ast.Assign):\n        targets = ', '.join(ast.unparse(t) for t in node.targets)\n        value = ast.unparse(node.value)\n        return f\"Assign {targets} = {value}\"\n    if isinstance(node, ast.Return):\n        val = ast.unparse(node.value) if node.value else ''\n        return f\"Return {val}\".strip()\n    if isinstance(node, ast.If):\n        return f\"If {ast.unparse(node.test)}:\"\n    if isinstance(node, ast.For):\n        return f\"For each {ast.unparse(node.target)} in {ast.unparse(node.iter)}:\"\n    if isinstance(node, ast.While):\n        return f\"While {ast.unparse(node.test)}:\"\n    if isinstance(node, ast.Expr):\n        return f\"Evaluate {ast.unparse(node.value)}\"\n    # Fallback\n    return f\"{node.__class__.__name__}: {snippet}\"\n\n\ndef annotate_source(source: str) -> str:\n    \"\"\"\n    Walk through the source code and insert comments after each statement\n    inside function bodies explaining what it does.\n    \"\"\"\n    tree = parse_source_to_ast(source)\n    attach_parents(tree)\n    stmts_by_line = collect_statements_by_line(tree)\n\n    out_lines = []\n    lines = source.splitlines()\n\n    for lineno, line in enumerate(lines, start=1):\n        out_lines.append(line)\n        nodes = stmts_by_line.get(lineno, [])\n        for node in nodes:\n            # Only annotate if inside a FunctionDef body\n            ptr = getattr(node, 'parent', None)\n            inside_func = False\n            while ptr:\n                if isinstance(ptr, ast.FunctionDef):\n                    inside_func = True\n                    break\n                ptr = getattr(ptr, 'parent', None)\n            if not inside_func:\n                continue\n\n            explanation = explain_node(node)\n            # Preserve same indentation\n            indent = ' ' * (len(line) - len(line.lstrip()))\n            comment = f\"{indent}# {explanation}\"\n            out_lines.append(comment)\n\n    return \"\\n\".join(out_lines)\n\n\ndef write_commented_file(input_path: str, output_path: str) -> None:\n    \"\"\"\n    Read input_path, annotate it, and write to output_path.\n    \"\"\"\n    if not os.path.isfile(input_path):\n        logger.error(f\"Input file does not exist: {input_path}\")\n        raise FileNotFoundError(input_path)\n\n    with open(input_path, 'r', encoding='utf-8') as f:\n        source = f.read()\n\n    annotated = annotate_source(source)\n    with open(output_path, 'w', encoding='utf-8') as f_out:\n        f_out.write(annotated)\n\n    logger.info(f\"Wrote commented file to {output_path}\")\n\n\ndef main():\n    parser = argparse.ArgumentParser(\n        description=\"Annotate a Python file with inline comments explaining each statement inside functions.\"\n    )\n    parser.add_argument('input', help='Path to the source .py file (e.g. answers.py)')\n    parser.add_argument(\n        '-o', '--output',\n        help='Path for the commented output file',\n        default=None\n    )\n    args = parser.parse_args()\n\n    in_path = args.input\n    out_path = args.output or (\n        os.path.splitext(in_path)[0] + '_commented.py'\n    )\n\n    try:\n        write_commented_file(in_path, out_path)\n    except Exception:\n        logger.exception(\"Annotation failed.\")\n        sys.exit(1)\n\n\nif __name__ == '__main__':\n    main()\n",
+      "metadata": null,
+      "dependencies": [],
+      "status": "failed",
+      "execution_result": {
+        "success": false,
+        "output": "",
+        "error": "python: can't open file '/home/ath/autonomous_coding_environment/debug_workspace/projects/project_002/debug_workspace/projects/project_002/task_005.py': [Errno 2] No such file or directory\n",
+        "return_code": 2,
+        "execution_time": 1748467010.5019164,
+        "task_file": "debug_workspace/projects/project_002/task_005.py"
+      },
+      "created_at": "2025-05-28T17:14:51.605855",
+      "updated_at": "2025-05-28T17:14:51.605858",
+      "priority": 5,
+      "estimated_duration": 20,
+      "category": "documentation"
+    }
+  ],
+  "created_at": "2025-05-28 17:14:32",
+  "status": "partially_completed",
+  "execution_results": {
+    "phases": [
+      {
+        "phase_number": 1,
+        "tasks_executed": 5,
+        "successful_tasks": 0,
+        "failed_tasks": 5,
+        "results": [
+          {
+            "task_id": "task_001",
+            "status": "failed",
+            "execution_result": {
+              "success": false,
+              "output": "",
+              "error": "python: can't open file '/home/ath/autonomous_coding_environment/debug_workspace/projects/project_002/debug_workspace/projects/project_002/task_001.py': [Errno 2] No such file or directory\n",
+              "return_code": 2,
+              "execution_time": 1748466899.5035794,
+              "task_file": "debug_workspace/projects/project_002/task_001.py"
+            }
+          },
+          {
+            "task_id": "task_004",
+            "status": "failed",
+            "execution_result": {
+              "success": false,
+              "output": "",
+              "error": "python: can't open file '/home/ath/autonomous_coding_environment/debug_workspace/projects/project_002/debug_workspace/projects/project_002/task_004.py': [Errno 2] No such file or directory\n",
+              "return_code": 2,
+              "execution_time": 1748466932.972945,
+              "task_file": "debug_workspace/projects/project_002/task_004.py"
+            }
+          },
+          {
+            "task_id": "task_003",
+            "status": "failed",
+            "execution_result": {
+              "success": false,
+              "output": "",
+              "error": "python: can't open file '/home/ath/autonomous_coding_environment/debug_workspace/projects/project_002/debug_workspace/projects/project_002/task_003.py': [Errno 2] No such file or directory\n",
+              "return_code": 2,
+              "execution_time": 1748466954.1960077,
+              "task_file": "debug_workspace/projects/project_002/task_003.py"
+            }
+          },
+          {
+            "task_id": "task_002",
+            "status": "failed",
+            "execution_result": {
+              "success": false,
+              "output": "",
+              "error": "python: can't open file '/home/ath/autonomous_coding_environment/debug_workspace/projects/project_002/debug_workspace/projects/project_002/task_002.py': [Errno 2] No such file or directory\n",
+              "return_code": 2,
+              "execution_time": 1748466972.3091705,
+              "task_file": "debug_workspace/projects/project_002/task_002.py"
+            }
+          },
+          {
+            "task_id": "task_005",
+            "status": "failed",
+            "execution_result": {
+              "success": false,
+              "output": "",
+              "error": "python: can't open file '/home/ath/autonomous_coding_environment/debug_workspace/projects/project_002/debug_workspace/projects/project_002/task_005.py': [Errno 2] No such file or directory\n",
+              "return_code": 2,
+              "execution_time": 1748467010.5019164,
+              "task_file": "debug_workspace/projects/project_002/task_005.py"
+            }
+          }
+        ]
+      }
+    ],
+    "summary": {
+      "total_tasks": 5,
+      "completed_tasks": 0,
+      "failed_tasks": 5,
+      "success_rate": 0.0,
+      "total_phases": 1
+    },
+    "validation_results": {
+      "task_validations": {
+        "task_001": {
+          "task_id": "task_001",
+          "static_analysis": {
+            "syntax_valid": true,
+            "has_main_function": true,
+            "has_docstrings": true,
+            "has_error_handling": false,
+            "complexity_score": 2,
+            "issues": []
+          },
+          "test_results": [
+            {
+              "test_name": "test_get_answer_returns_42",
+              "passed": true,
+              "error_message": null,
+              "execution_time": 0.0,
+              "output": ""
+            },
+            {
+              "test_name": "test___all__contains_get_answer",
+              "passed": true,
+              "error_message": null,
+              "execution_time": 0.0,
+              "output": ""
+            },
+            {
+              "test_name": "test_configure_logging_idempotent",
+              "passed": true,
+              "error_message": null,
+              "execution_time": 0.0,
+              "output": ""
+            },
+            {
+              "test_name": "test_configure_logging_sets_level",
+              "passed": true,
+              "error_message": null,
+              "execution_time": 0.0,
+              "output": ""
+            },
+            {
+              "test_name": "test_main_output_and_logging",
+              "passed": true,
+              "error_message": null,
+              "execution_time": 0.0,
+              "output": ""
+            }
+          ],
+          "overall_quality": "excellent"
+        },
+        "task_002": {
+          "task_id": "task_002",
+          "static_analysis": {
+            "syntax_valid": true,
+            "has_main_function": true,
+            "has_docstrings": true,
+            "has_error_handling": true,
+            "complexity_score": 3,
+            "issues": []
+          },
+          "test_results": [
+            {
+              "test_name": "test_get_answer_returns_42",
+              "passed": true,
+              "error_message": null,
+              "execution_time": 0.0,
+              "output": ""
+            },
+            {
+              "test_name": "test_get_answer_return_type",
+              "passed": true,
+              "error_message": null,
+              "execution_time": 0.0,
+              "output": ""
+            },
+            {
+              "test_name": "test_get_answer_docstring_contents",
+              "passed": true,
+              "error_message": null,
+              "execution_time": 0.0,
+              "output": ""
+            },
+            {
+              "test_name": "test_main_success_exit_code_and_logging",
+              "passed": true,
+              "error_message": null,
+              "execution_time": 0.0,
+              "output": ""
+            },
+            {
+              "test_name": "test_main_error_exit_code_and_logging",
+              "passed": true,
+              "error_message": null,
+              "execution_time": 0.0,
+              "output": ""
+            }
+          ],
+          "overall_quality": "excellent"
+        },
+        "task_003": {
+          "task_id": "task_003",
+          "static_analysis": {
+            "syntax_valid": true,
+            "has_main_function": true,
+            "has_docstrings": true,
+            "has_error_handling": true,
+            "complexity_score": 2,
+            "issues": []
+          },
+          "test_results": [
+            {
+              "test_name": "test_get_answer_returns_42",
+              "passed": true,
+              "error_message": null,
+              "execution_time": 0.0,
+              "output": ""
+            },
+            {
+              "test_name": "test_main_prints_correct_output",
+              "passed": true,
+              "error_message": null,
+              "execution_time": 0.0,
+              "output": ""
+            },
+            {
+              "test_name": "test_get_answer_raises_when_logger_debug_fails",
+              "passed": true,
+              "error_message": null,
+              "execution_time": 0.0,
+              "output": ""
+            },
+            {
+              "test_name": "test_get_answer_wrong_signature_raises_type_error",
+              "passed": true,
+              "error_message": null,
+              "execution_time": 0.0,
+              "output": ""
+            },
+            {
+              "test_name": "test_main_propagates_exception_from_get_answer",
+              "passed": true,
+              "error_message": null,
+              "execution_time": 0.0,
+              "output": ""
+            }
+          ],
+          "overall_quality": "excellent"
+        },
+        "task_004": {
+          "task_id": "task_004",
+          "static_analysis": {
+            "syntax_valid": true,
+            "has_main_function": false,
+            "has_docstrings": true,
+            "has_error_handling": false,
+            "complexity_score": 0,
+            "issues": []
+          },
+          "test_results": [
+            {
+              "test_name": "test_get_answer_returns_42",
+              "passed": true,
+              "error_message": null,
+              "execution_time": 0.0,
+              "output": ""
+            },
+            {
+              "test_name": "test_get_answer_return_type",
+              "passed": true,
+              "error_message": null,
+              "execution_time": 0.0,
+              "output": ""
+            },
+            {
+              "test_name": "test_get_answer_idempotent",
+              "passed": true,
+              "error_message": null,
+              "execution_time": 0.0,
+              "output": ""
+            },
+            {
+              "test_name": "test_get_answer_logs_debug",
+              "passed": true,
+              "error_message": null,
+              "execution_time": 0.0,
+              "output": ""
+            },
+            {
+              "test_name": "test_get_answer_unexpected_arguments",
+              "passed": true,
+              "error_message": null,
+              "execution_time": 0.0,
+              "output": ""
+            }
+          ],
+          "overall_quality": "excellent"
+        },
+        "task_005": {
+          "task_id": "task_005",
+          "static_analysis": {
+            "syntax_valid": true,
+            "has_main_function": true,
+            "has_docstrings": true,
+            "has_error_handling": true,
+            "complexity_score": 20,
+            "issues": []
+          },
+          "test_results": [
+            {
+              "test_name": "test_parse_source_to_ast_valid",
+              "passed": true,
+              "error_message": null,
+              "execution_time": 0.0,
+              "output": ""
+            },
+            {
+              "test_name": "test_parse_source_to_ast_invalid",
+              "passed": true,
+              "error_message": null,
+              "execution_time": 0.0,
+              "output": ""
+            },
+            {
+              "test_name": "test_attach_parents_assign",
+              "passed": true,
+              "error_message": null,
+              "execution_time": 0.0,
+              "output": ""
+            },
+            {
+              "test_name": "test_collect_statements_by_line",
+              "passed": true,
+              "error_message": null,
+              "execution_time": 0.0,
+              "output": ""
+            },
+            {
+              "test_name": "test_explain_node_various",
+              "passed": true,
+              "error_message": null,
+              "execution_time": 0.0,
+              "output": ""
+            },
+            {
+              "test_name": "test_annotate_source_simple",
+              "passed": true,
+              "error_message": null,
+              "execution_time": 0.0,
+              "output": ""
+            },
+            {
+              "test_name": "test_annotate_source_no_function",
+              "passed": true,
+              "error_message": null,
+              "execution_time": 0.0,
+              "output": ""
+            },
+            {
+              "test_name": "test_annotate_source_empty",
+              "passed": true,
+              "error_message": null,
+              "execution_time": 0.0,
+              "output": ""
+            },
+            {
+              "test_name": "test_write_commented_file_and_cleanup",
+              "passed": true,
+              "error_message": null,
+              "execution_time": 0.0,
+              "output": ""
+            },
+            {
+              "test_name": "test_write_commented_file_missing_input",
+              "passed": true,
+              "error_message": null,
+              "execution_time": 0.0,
+              "output": ""
+            }
+          ],
+          "overall_quality": "excellent"
+        }
+      },
+      "summary": {
+        "total_validated": 5,
+        "excellent": 5,
+        "good": 0,
+        "fair": 0,
+        "poor": 0,
+        "quality_distribution": {
+          "excellent": 5
+        }
+      }
+    }
+  }
+}

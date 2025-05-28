@@ -1,0 +1,33 @@
+version: '3.8'
+
+services:
+  ace-v2:
+    build: .
+    container_name: ace-v2-safe
+    volumes:
+      # Mount workspaces for persistence (but isolated from host)
+      - ace_workspaces:/app/workspaces
+      # Mount .env file for API keys
+      - ./.env:/app/.env:ro
+    environment:
+      - PYTHONPATH=/app
+      - PYTHONUNBUFFERED=1
+    stdin_open: true
+    tty: true
+    # Override default command for interactive use
+    command: /bin/bash
+    
+  # Alternative service for running tests
+  ace-v2-test:
+    build: .
+    container_name: ace-v2-test
+    volumes:
+      - ace_workspaces:/app/workspaces
+      - ./.env:/app/.env:ro
+    environment:
+      - PYTHONPATH=/app
+      - PYTHONUNBUFFERED=1
+    command: python debug_generation.py
+
+volumes:
+  ace_workspaces: 

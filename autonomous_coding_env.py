@@ -52,7 +52,7 @@ class TaskLibrary(BaseModel):
     tasks: Dict[str, Task] = Field(default_factory=dict)
 
 class EnhancedAutonomousCodingEnvironment:
-    def __init__(self, model: str = "gpt-4o-mini", workspace: str = "enhanced_autonomous_workspace"):
+    def __init__(self, model: str = "o4-mini", workspace: str = "enhanced_autonomous_workspace"):
         self.model = model
         self.workspace = workspace
         self.projects: Dict[str, Project] = {}
